@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register  - My Travel Diaries</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Create an Account</h1>
+    <!-- Registration form: JS (register.js) intercepts submit and sends data via fetch instead of a normal page reload -->
+
+    <form id="registratForm">
+        <input type="text" id="username" placeholder="username" required>
+        <input type="email" id="email" placeholder="email" required>
+        <input type="password" id="password" placeholder="password" required>
+        <button type="submit">Register</button>
+    </form>
+    
+    <!-- Filled in by JS with a success or error message after the form is submitted -->
+    <p id="registerMessage"></p>
+    <script src="js/register.js"></script>
+</body>
+</html>

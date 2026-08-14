@@ -9,3 +9,9 @@ body {
 h1 {
   color: #417679;
 }
+form input,
+form button {
+  display: block;
+  margin: 10px auto;
+}
+
