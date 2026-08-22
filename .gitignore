@@ -2,3 +2,5 @@ node_modules/
 .env
 .postman/
 postman/
+public/uploads/*
+!public/uploads/.gitkeep
