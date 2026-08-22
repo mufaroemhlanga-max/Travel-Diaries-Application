@@ -3,15 +3,30 @@ const router = express.Router();
 const Post = require('../models/Post');
 const User = require('../models/User');
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
+
 //Create a new post for a logged in user
-router.post('/', async (req, res) => {
+router.post('/', upload.single('photo'), async (req, res) => {
     try {
         //Block the request if the user is not logged in and not registered
         if (!req.session.userId) {
             return res.status(401).json({ message: 'Not logged in' });
         }
 
-        const { photo, description, travelDate } = req.body;
+        const {  description, travelDate } = req.body;
+        const photo = req.file.filename; // Get the filename of the uploaded photo
         const newPost = new Post({
             user: req.session.userId,
             photo,
@@ -41,9 +56,39 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Error fetching posts', error: error.message });
     }
 });
+    // Fetches only the logged-in user's own posts, newest first
+router.get('/mine', async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      return res.status(401).json({ message: 'Not logged in' });
+    }
+
+    const posts = await Post.find({ user: req.session.userId })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching your posts', error: error.message });
+  }
+});
+
+// Fetches a single post by ID (used to pre-fill the edit form)
+router.get('/:Id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.Id);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching post', error: error.message });
+  }
+});
 
 // Updates an existing post only if the logged-in user is the owner of the post
-router.put('/:Id', async (req, res) => {
+router.put('/:Id', upload.single('photo'), async (req, res) => {
     try {
         if (!req.session.userId) {
             return res.status(401).json({ message: 'Not logged in' });
@@ -59,8 +104,8 @@ router.put('/:Id', async (req, res) => {
             return res.status(403).json({ message: 'You are not authorized to update this post' });
         }
 
-        const { photo, description, travelDate } = req.body;
-        if (photo) post.photo = photo;
+        const { description, travelDate } = req.body;
+        if (req.file) post.photo = req.file.filename;
         if (description) post.description = description;
         if (travelDate) post.travelDate = travelDate;
 

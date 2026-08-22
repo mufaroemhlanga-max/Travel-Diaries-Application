@@ -1,3 +1,4 @@
+//A registered user account. Passswords are hashed with bcrypt before saving (see routes/auth.js) never saved as plain text
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({

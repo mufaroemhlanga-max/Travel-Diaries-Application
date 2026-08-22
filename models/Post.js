@@ -1,3 +1,4 @@
+// A single travel post. `user` links back to its owner (see routes/post.js for the ownership checks on edit/delete).
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
@@ -6,7 +7,7 @@ const postSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    photo: {
+    photo: { // The filename of the uploaded photo, stored in /public/uploads by Multer
         type: String,
         required: true
     },

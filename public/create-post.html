@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Post - My Travel Diaries</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+  </nav>
+
+  <h1 id="formTitle">Share a Travel Memory</h1>
+
+  <!-- Create/edit post form: JS (create-post.js) intercepts submit and sends data via fetch instead of a normal page reload -->
+  <form id="createPostForm">
+    <input type="file" id="photo" accept="image/jpeg,image/png,image/webp">
+    <p id="photoHint"></p>
+    <textarea id="description" placeholder="Describe your trip..." required></textarea>
+    <input type="date" id="travelDate" required>
+    <button type="submit">Post</button>
+  </form>
+
+  <p id="postMessage"></p>
+  <script src="js/create-post.js"></script>
+</body>
+</html>
