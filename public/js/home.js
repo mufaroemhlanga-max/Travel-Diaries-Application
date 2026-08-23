@@ -45,7 +45,6 @@ async function checkLoginStatus() {
       const data = await response.json();
       profileLink.style.display = 'inline';
       welcomeMessage.textContent = `Welcome back, ${data.username}!`;
-
       newPostLink.style.display = 'inline';
       logoutLink.style.display = 'inline';
       registerLink.style.display = 'none';

@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register  - My Travel Diaries</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - My Travel Diaries</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Create an Account</h1>
-    <!-- Registration form: JS (register.js) intercepts submit and sends data via fetch instead of a normal page reload -->
+  <div class="auth-page">
+    <div class="auth-visual">
+      <div class="auth-visual-text">
+        <div class="logo">✈ Travel Diaries</div>
+        <p>Collect moments, not things.<br>Leave footprints, not just memories.</p>
+      </div>
+    </div>
 
-    <form id="registratForm">
-        <input type="text" id="username" placeholder="username" required>
-        <input type="email" id="email" placeholder="email" required>
-        <input type="password" id="password" placeholder="password" required>
-        <button type="submit">Register</button>
-    </form>
-    
-    <!-- Filled in by JS with a success or error message after the form is submitted -->
-    <p id="registerMessage"></p>
-    <script src="js/register.js"></script>
+    <div class="auth-form-panel">
+      <div class="auth-form-box">
+        <h1>Create Account</h1>
+        <p class="auth-subtitle">Start your journey with Travel Diaries</p>
+
+        <!-- Registration form: JS (register.js) intercepts submit and sends data via fetch instead of a normal page reload -->
+        <form id="registratForm">
+          <label for="username">Name</label>
+          <input type="text" id="username" placeholder="Enter your name" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+
+          <button type="submit">Sign Up</button>
+        </form>
+
+        <!-- Filled in by JS with a success or error message after the form is submitted -->
+        <p id="registerMessage"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/register.js"></script>
 </body>
 </html>

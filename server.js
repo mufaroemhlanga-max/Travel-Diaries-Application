@@ -16,7 +16,8 @@ app.use(session({
   saveUninitialized: false,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // logged in for 30 days
 }));
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 
 app.use(express.static('public')); // Serves index.html, CSS, client side JS and uploaded photos directly
 app.use('/api/auth', authRoutes);

@@ -4,32 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Travel Diaries</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Caveat:wght@600&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">✈ Travel Diaries</div>
-    <nav>
-  <a href="index.html">Home</a>
-  <a href="create-post.html" id="newPostLink" style="display:none;">+ New Post</a>
-  <a href="profile.html" id="profileLink" style="display:none;">Profile</a>
-  <a href="register.html" id="registerLink">Register</a>
-  <a href="login.html" id="loginLink">Login</a>
-  <a href="#" id="logoutLink" style="display:none;">Logout</a>
-</nav>
+  <div class="landing">
+    <div class="collage">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Oia_Santorini_Blue_Domes.jpg?width=500" alt="Santorini, Greece" class="collage-photo rotate-1">
+      <div class="quote-card rotate-2">life is short and the world is wide</div>
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hot_air_balloons_in_Cappadocia.jpg?width=500" alt="Hot air balloons over Cappadocia" class="collage-photo rotate-3">
 
-  </header>
-
-  <section class="hero">
-    <h1 id="welcomeMessage">Welcome to My Travel Diaries</h1>
-    <p>Collect moments, not things.</p>
-    <p id="todayDate"></p>
-    <p id="locationWeather"></p>
-  </section>
-
-  <!-- home.js fetches posts from the backend and inserts them here as cards -->
-  <main id="postsContainer" class="posts-grid"></main>
-
-  <script src="js/home.js"></script>
+      <div class="quote-card rotate-4">say yes to new adventures</div>
+      <div class="collage-text">
+        <div class="logo">✈ Travel Diaries</div>
+        <h1 class="script-heading">Travel</h1>
+        <p class="subheading">Collect moments, not things.</p>
+        <div class="landing-buttons">
+          <a href="register.html" class="btn-primary">Get Started</a>
+          <a href="login.html" class="btn-secondary">Login</a>
+        </div>
+        <!-- Lets visitors view the public feed without registering first -->
+        <a href="home.html" class="browse-link">Browse without an account →</a>
+      </div>
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Airplane_window_sunset_%28Unsplash%29.jpg?width=500" alt="Airplane window at sunset" class="collage-photo rotate-5">
+    </div>
+    <p class="photo-credit">Photos courtesy of Wikimedia Commons</p>
+  </div>
 </body>
 </html>

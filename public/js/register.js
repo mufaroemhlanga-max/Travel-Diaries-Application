@@ -18,7 +18,7 @@ document.getElementById('registratForm').addEventListener('submit', async (event
     const data = await response.json();
 
     if (response.ok) {
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     } else {
       messageEl.textContent = data.message;
     }
