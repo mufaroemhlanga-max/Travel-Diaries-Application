@@ -26,6 +26,10 @@ router.post('/', upload.single('photo'), async (req, res) => {
         }
 
         const {  description, travelDate } = req.body;
+        if (new Date(travelDate) > new Date()) {
+  return res.status(400).json({ message: 'Travel date cannot be in the future' });
+}
+
         const photo = req.file.filename; // Get the filename of the uploaded photo
         const newPost = new Post({
             user: req.session.userId,
@@ -107,7 +111,12 @@ router.put('/:Id', upload.single('photo'), async (req, res) => {
         const { description, travelDate } = req.body;
         if (req.file) post.photo = req.file.filename;
         if (description) post.description = description;
-        if (travelDate) post.travelDate = travelDate;
+        if (travelDate) {
+            if (new Date(travelDate) > new Date()) {
+                return res.status(400).json({ message: 'Travel date cannot be in the future' });
+            }
+            post.travelDate = travelDate;
+        }
 
         await post.save();
         res.status(200).json({ message: 'Post updated successfully', post });

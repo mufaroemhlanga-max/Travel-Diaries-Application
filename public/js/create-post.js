@@ -3,6 +3,9 @@ const params = new URLSearchParams(window.location.search);
 const postId = params.get('id');
 
 // If editing, pre-fill the form with the existing post's data
+// Prevent selecting a future date in the date picker
+document.getElementById('travelDate').max = new Date().toISOString().split('T')[0];
+
 if (postId) {
   document.getElementById('formTitle').textContent = 'Edit Your Travel Memory';
   document.getElementById('photoHint').textContent = 'Leave empty to keep your current photo.';

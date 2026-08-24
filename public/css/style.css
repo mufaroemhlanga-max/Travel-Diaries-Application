@@ -1,14 +1,21 @@
+/* ===== Global / Base Styles ===== */
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f0eb;
   color: #1f1f1f;
   text-align: center;
   padding: 50px;
+  margin: 0; /* Removes the browser's default body margin so full-bleed sections (landing, auth pages) can reach the true screen edge */
 }
 
 h1 {
   color: #416668;
 }
+
+
+/* ===== Forms (login, register, create-post) ===== */
+
 form {
   max-width: 350px;
   margin: 30px auto;
@@ -39,42 +46,7 @@ form button:hover {
 }
 
 
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 0 20px;
-}
-
-.post {
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  text-align: left;
-}
-
-.post-photo {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  display: block;
-}
-
-.post h3,
-.post p {
-  padding: 0 15px;
-}
-
-.post h3 {
-  margin-top: 12px;
-}
-
-.post p:last-child {
-  padding-bottom: 15px;
-}
+/* ===== Header & Navigation ===== */
 
 header {
   display: flex;
@@ -132,15 +104,104 @@ header nav a#newPostLink:hover {
   }
 
   body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f0eb;
-  color: #1f1f1f;
-  text-align: center;
-  padding: 50px;
-  margin: 0;
+    padding: 20px;
+  }
 }
 
+
+/* ===== Homepage Hero (welcome message, date, weather) ===== */
+
+.hero {
+  background: linear-gradient(135deg, #417679, #2b2b2b);
+  color: white;
+  border-radius: 12px;
+  padding: 40px 20px;
+  margin-bottom: 30px;
 }
+
+.hero h1 {
+  color: white;
+}
+
+.hero > p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero-badges {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.hero-badges span {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+
+/* ===== Posts Grid & Cards ===== */
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.post {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.post-photo {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+.post h3,
+.post p {
+  padding: 0 15px;
+}
+
+.post h3 {
+  margin-top: 12px;
+}
+
+.post p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.post p:last-child {
+  padding-bottom: 15px;
+}
+
+.post p em {
+  color: #417679;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+
+/* ===== Post Actions (Edit/Delete, on the Profile page) ===== */
 
 .post-actions {
   display: flex;
@@ -154,27 +215,6 @@ header nav a#newPostLink:hover {
   font-weight: bold;
   text-decoration: none;
 }
-.post {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.post:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.post p {
-  color: #555;
-  font-size: 0.95rem;
-}
-
-.post p em {
-  color: #417679;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 0.85rem;
-}
-
 
 .deleteBtn {
   background: none;
@@ -189,37 +229,15 @@ header nav a#newPostLink:hover {
   text-decoration: underline;
 }
 
+
+/* ===== Landing Page (photo collage hero) ===== */
+
 .landing {
   background-image: linear-gradient(rgba(43, 43, 43, 0.55), rgba(43, 43, 43, 0.55)), url('../images/hero-bg.jpg');
   background-size: cover;
   background-position: center;
-  margin: -60px;
-  min-height: 110vh;
-}
-
-
-.landing-content {
-  color: white;
-  max-width: 500px;
-  padding: 20px;
-}
-
-.landing-content .logo {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  font-weight: bold;
-}
-
-.landing-content h1 {
-  color: rgb(10, 9, 9);
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-}
-
-.landing-content p {
-  font-size: 1.1rem;
-  margin-bottom: 30px;
-  opacity: 0.9;
+  margin: -50px; /* Cancels out body's 50px padding so this section reaches the true screen edge */
+  min-height: 100vh;
 }
 
 .landing-buttons {
@@ -265,13 +283,6 @@ header nav a#newPostLink:hover {
   gap: 24px;
 }
 
-.collage-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 8px solid white;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
 
 .quote-card {
   background: #f4ecd8;
@@ -287,6 +298,7 @@ header nav a#newPostLink:hover {
   color: #417679;
 }
 
+/* Slight rotations on individual collage items create the "scattered" scrapbook look */
 .rotate-1 { transform: rotate(-4deg); }
 .rotate-2 { transform: rotate(2deg); }
 .rotate-3 { transform: rotate(4deg); }
@@ -318,12 +330,6 @@ header nav a#newPostLink:hover {
   margin-bottom: 20px;
 }
 
-.photo-credit {
-  text-align: center;
-  font-size: 0.75rem;
-  color: #999;
-  padding-bottom: 30px;
-}
 
 @media (max-width: 700px) {
   .collage {
@@ -339,10 +345,14 @@ header nav a#newPostLink:hover {
     transform: none;
   }
 }
+
+
+/* ===== Auth Pages (Login/Register split-screen) ===== */
+
 .auth-page {
   display: flex;
   min-height: 100vh;
-  margin: -50px;
+  margin: -50px; /* Cancels out body's 50px padding, same technique as .landing */
 }
 
 .auth-visual {
@@ -404,36 +414,3 @@ header nav a#newPostLink:hover {
     min-height: 200px;
   }
 }
-.hero {
-  background: linear-gradient(135deg, #417679, #2b2b2b);
-  color: white;
-  border-radius: 12px;
-  padding: 40px 20px;
-  margin-bottom: 30px;
-}
-
-.hero h1 {
-  color: white;
-}
-
-.hero > p {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.hero-badges {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-
-.hero-badges span {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-
-

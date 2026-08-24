@@ -1,4 +1,6 @@
 require('dotenv').config(); //Loads MONGODB URI and SESSION_SECRET from .env into process.env
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']); //Force Node to use Google DNS - school network's DNS was refusing MongoDB's SRV lookup
 const session = require('express-session');
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
