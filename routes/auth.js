@@ -22,6 +22,9 @@ router.post('/register', async (req, res) => {
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         console.error(error);
+        if (error.code === 11000) {
+            return res.status(400).json({ message: 'That username or email is already registered' });
+        }
         res.status(400).json({ message: 'Error registering user', error: error.message});
     }
 });

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Post = require('../models/Post');
 const User = require('../models/User');
 
@@ -80,6 +81,10 @@ router.get('/mine', async (req, res) => {
 // Fetches a single post by ID (used to pre-fill the edit form)
 router.get('/:Id', async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.Id)) {
+      return res.status(400).json({ message: 'Invalid post ID' });
+    }
+
     const post = await Post.findById(req.params.Id);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
@@ -96,6 +101,10 @@ router.put('/:Id', upload.single('photo'), async (req, res) => {
     try {
         if (!req.session.userId) {
             return res.status(401).json({ message: 'Not logged in' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(req.params.Id)) {
+            return res.status(400).json({ message: 'Invalid post ID' });
         }
 
         const post = await Post.findById(req.params.Id);
@@ -131,6 +140,10 @@ router.delete('/:Id', async (req, res) => {
     try {
         if (!req.session.userId) {
             return res.status(401).json({ message: 'Not logged in' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(req.params.Id)) {
+            return res.status(400).json({ message: 'Invalid post ID' });
         }
 
         const post = await Post.findById(req.params.Id);

@@ -41,8 +41,16 @@ async function loadMyPosts() {
         if (!confirmed) return;
 
         const postId = button.dataset.id;
-        await fetch(`/api/posts/${postId}`, { method: 'DELETE' });
-        window.location.reload();
+        try {
+          const response = await fetch(`/api/posts/${postId}`, { method: 'DELETE' });
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            alert('Could not delete this post. Please try again.');
+          }
+        } catch (error) {
+          alert('Something went wrong. Please check your connection and try again.');
+        }
       });
     });
   } catch (error) {

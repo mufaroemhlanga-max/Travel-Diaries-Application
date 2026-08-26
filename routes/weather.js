@@ -20,18 +20,24 @@ router.get('/', async (req, res) => {
   try {
     const { lat, lon } = req.query;
 
-    if (!lat || !lon) {
-      return res.status(400).json({ message: 'Latitude and longitude are required' });
+    if (!lat || !lon || isNaN(lat) || isNaN(lon)) {
+      return res.status(400).json({ message: 'Latitude and longitude must be valid numbers' });
     }
 
     const weatherResponse = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
     );
+    if (!weatherResponse.ok) {
+      return res.status(502).json({ message: 'Could not fetch weather data' });
+    }
     const weatherData = await weatherResponse.json();
 
     const locationResponse = await fetch(
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
     );
+    if (!locationResponse.ok) {
+      return res.status(502).json({ message: 'Could not fetch location data' });
+    }
     const locationData = await locationResponse.json();
 
     res.status(200).json({

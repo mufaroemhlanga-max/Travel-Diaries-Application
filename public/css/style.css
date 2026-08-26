@@ -201,7 +201,7 @@ header nav a#newPostLink:hover {
 }
 
 
-/* ===== Post Actions (Edit/Delete, on the Profile page) ===== */
+/* ===== Post Actions (Edit/Delete, on the My Diary page) ===== */
 
 .post-actions {
   display: flex;

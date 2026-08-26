@@ -33,7 +33,7 @@ async function loadPosts() {
 async function checkLoginStatus() {
   const welcomeMessage = document.getElementById('welcomeMessage');
   const newPostLink = document.getElementById('newPostLink');
-  const profileLink = document.getElementById('profileLink');
+  const diaryLink = document.getElementById('diaryLink');
   const registerLink = document.getElementById('registerLink');
   const loginLink = document.getElementById('loginLink');
   const logoutLink = document.getElementById('logoutLink');
@@ -43,7 +43,7 @@ async function checkLoginStatus() {
 
     if (response.ok) {
       const data = await response.json();
-      profileLink.style.display = 'inline';
+      diaryLink.style.display = 'inline';
       welcomeMessage.textContent = `Welcome back, ${data.username}!`;
       newPostLink.style.display = 'inline';
       logoutLink.style.display = 'inline';

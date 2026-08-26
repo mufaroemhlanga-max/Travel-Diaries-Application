@@ -11,10 +11,18 @@ if (postId) {
   document.getElementById('photoHint').textContent = 'Leave empty to keep your current photo.';
 
   fetch(`/api/posts/${postId}`)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Post not found');
+      }
+      return response.json();
+    })
     .then(post => {
       document.getElementById('description').value = post.description;
       document.getElementById('travelDate').value = post.travelDate.split('T')[0];
+    })
+    .catch(() => {
+      document.getElementById('postMessage').textContent = 'Could not load this post.';
     });
 }
 
@@ -27,6 +35,11 @@ document.getElementById('createPostForm').addEventListener('submit', async (even
   const travelDate = document.getElementById('travelDate').value;
 
   const messageEl = document.getElementById('postMessage');
+
+  if (!postId && !photoFile) {
+    messageEl.textContent = 'Please select a photo.';
+    return;
+  }
 
   const formData = new FormData();
   if (photoFile) formData.append('photo', photoFile);
@@ -45,7 +58,7 @@ document.getElementById('createPostForm').addEventListener('submit', async (even
     const data = await response.json();
 
     if (response.ok) {
-      window.location.href = 'profile.html';
+      window.location.href = 'diary.html';
     } else {
       messageEl.textContent = data.message;
     }
