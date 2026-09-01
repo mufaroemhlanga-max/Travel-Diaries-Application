@@ -21,8 +21,15 @@ async function loadMyPosts() {
       const postEl = document.createElement('div');
       postEl.classList.add('post');
 
+      const multiPhotoBadge = post.photos.length > 1
+        ? `<span class="photo-count">📷 ${post.photos.length}</span>`
+        : '';
+
       postEl.innerHTML = `
-        <img src="uploads/${post.photo}" alt="Travel Photo" class="post-photo">
+        <div class="post-photo-wrapper">
+          <img src="uploads/${post.photos[0]}" alt="Travel Photo" class="post-photo">
+          ${multiPhotoBadge}
+        </div>
         <p>${post.description}</p>
         <p><em>${new Date(post.travelDate).toLocaleDateString()}</em></p>
         <div class="post-actions">
@@ -30,6 +37,10 @@ async function loadMyPosts() {
           <button class="deleteBtn" data-id="${post._id}">Delete</button>
         </div>
       `;
+
+      postEl.querySelector('.post-photo').addEventListener('click', () => {
+        openPhotoModal(post.photos, { postId: post._id, canDelete: true });
+      });
 
       container.appendChild(postEl);
     });

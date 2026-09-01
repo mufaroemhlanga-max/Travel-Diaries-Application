@@ -15,12 +15,23 @@ async function loadPosts() {
       const postEl = document.createElement('div');
       postEl.classList.add('post');
 
+      const multiPhotoBadge = post.photos.length > 1
+        ? `<span class="photo-count">📷 ${post.photos.length}</span>`
+        : '';
+
       postEl.innerHTML = `
-        <img src="uploads/${post.photo}" alt="Travel Photo" class="post-photo">
+        <div class="post-photo-wrapper">
+          <img src="uploads/${post.photos[0]}" alt="Travel Photo" class="post-photo">
+          ${multiPhotoBadge}
+        </div>
         <h3>${post.user.username}</h3>
         <p>${post.description}</p>
         <p><em>${new Date(post.travelDate).toLocaleDateString()}</em></p>
       `;
+
+      postEl.querySelector('.post-photo').addEventListener('click', () => {
+        openPhotoModal(post.photos);
+      });
 
       container.appendChild(postEl);
     });

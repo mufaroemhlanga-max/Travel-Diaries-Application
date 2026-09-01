@@ -5,6 +5,9 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 
 const multer = require('multer');
+const fs = require('fs').promises;
+const path = require('path');
+const heicConvert = require('heic-convert');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -17,9 +20,33 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// If a file is actually HEIC/HEIF (regardless of its extension), converts it to a real JPEG.
+// If it's not HEIC, the conversion attempt fails harmlessly and the original file is kept as-is.
+async function convertIfHeic(file) {
+  const inputPath = path.join('public/uploads', file.filename);
+  const inputBuffer = await fs.readFile(inputPath);
+
+  try {
+    const outputBuffer = await heicConvert({
+      buffer: inputBuffer,
+      format: 'JPEG',
+      quality: 1
+    });
+
+    const newFilename = file.filename.replace(/\.[^.]+$/, '') + '-converted.jpg';
+    await fs.writeFile(path.join('public/uploads', newFilename), outputBuffer);
+    await fs.unlink(inputPath); // Remove the original HEIC file, it's no longer needed
+
+    return newFilename;
+  } catch (error) {
+    // Not actually a HEIC file — keep it exactly as uploaded
+    return file.filename;
+  }
+}
+
 
 //Create a new post for a logged in user
-router.post('/', upload.single('photo'), async (req, res) => {
+router.post('/', upload.array('photos', 5), async (req, res) => {
     try {
         //Block the request if the user is not logged in and not registered
         if (!req.session.userId) {
@@ -31,10 +58,10 @@ router.post('/', upload.single('photo'), async (req, res) => {
   return res.status(400).json({ message: 'Travel date cannot be in the future' });
 }
 
-        const photo = req.file.filename; // Get the filename of the uploaded photo
+        const photos = await Promise.all(req.files.map(file => convertIfHeic(file))); // Convert any HEIC photos to JPEG, keep others as-is
         const newPost = new Post({
             user: req.session.userId,
-            photo,
+            photos,
             description,
             travelDate
         });
@@ -97,7 +124,7 @@ router.get('/:Id', async (req, res) => {
 });
 
 // Updates an existing post only if the logged-in user is the owner of the post
-router.put('/:Id', upload.single('photo'), async (req, res) => {
+router.put('/:Id', upload.array('photos', 5), async (req, res) => {
     try {
         if (!req.session.userId) {
             return res.status(401).json({ message: 'Not logged in' });
@@ -118,7 +145,9 @@ router.put('/:Id', upload.single('photo'), async (req, res) => {
         }
 
         const { description, travelDate } = req.body;
-        if (req.file) post.photo = req.file.filename;
+        if (req.files && req.files.length > 0) {
+            post.photos = await Promise.all(req.files.map(file => convertIfHeic(file)));
+        }
         if (description) post.description = description;
         if (travelDate) {
             if (new Date(travelDate) > new Date()) {
@@ -133,6 +162,47 @@ router.put('/:Id', upload.single('photo'), async (req, res) => {
         console.error(error);
         res.status(400).json({ message: 'Error updating post', error: error.message });
     }   
+});
+
+// Deletes a single photo from a post by its position in the array, keeping the rest.
+// A post must always have at least one photo — delete the whole post instead if removing the last one.
+router.delete('/:Id/photos/:index', async (req, res) => {
+    try {
+        if (!req.session.userId) {
+            return res.status(401).json({ message: 'Not logged in' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(req.params.Id)) {
+            return res.status(400).json({ message: 'Invalid post ID' });
+        }
+
+        const post = await Post.findById(req.params.Id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        if (post.user.toString() !== req.session.userId) {
+            return res.status(403).json({ message: 'You are not authorized to edit this post' });
+        }
+
+        const index = parseInt(req.params.index, 10);
+        if (isNaN(index) || index < 0 || index >= post.photos.length) {
+            return res.status(400).json({ message: 'Invalid photo index' });
+        }
+
+        if (post.photos.length === 1) {
+            return res.status(400).json({ message: 'A post must have at least one photo. Delete the whole post instead.' });
+        }
+
+        const [removedPhoto] = post.photos.splice(index, 1);
+        await post.save();
+        await fs.unlink(path.join('public/uploads', removedPhoto)).catch(() => {});
+
+        res.status(200).json({ message: 'Photo deleted successfully', post });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Error deleting photo', error: error.message });
+    }
 });
 
 // Deletes an existing post only if the logged-in user is the owner of the post

@@ -30,19 +30,27 @@ if (postId) {
 document.getElementById('createPostForm').addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const photoFile = document.getElementById('photo').files[0];
+  const submitBtn = event.target.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Posting...';
+
+  const photoFiles = document.getElementById('photos').files;
   const description = document.getElementById('description').value;
   const travelDate = document.getElementById('travelDate').value;
 
   const messageEl = document.getElementById('postMessage');
 
-  if (!postId && !photoFile) {
-    messageEl.textContent = 'Please select a photo.';
+  if (!postId && photoFiles.length === 0) {
+    messageEl.textContent = 'Please select at least one photo.';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Post';
     return;
   }
 
   const formData = new FormData();
-  if (photoFile) formData.append('photo', photoFile);
+  for (const file of photoFiles) {
+    formData.append('photos', file);
+  }
   formData.append('description', description);
   formData.append('travelDate', travelDate);
 
@@ -61,8 +69,12 @@ document.getElementById('createPostForm').addEventListener('submit', async (even
       window.location.href = 'diary.html';
     } else {
       messageEl.textContent = data.message;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Post';
     }
   } catch (error) {
     messageEl.textContent = 'Something went wrong. Please try again.';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Post';
   }
 });

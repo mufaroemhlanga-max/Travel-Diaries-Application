@@ -7,8 +7,8 @@ const postSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    photo: { // The filename of the uploaded photo, stored in /public/uploads by Multer
-        type: String,
+    photos: { // The filename of the uploaded photo, stored in /public/uploads by Multer
+        type: [String],
         required: true
     },
     description: {

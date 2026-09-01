@@ -15,7 +15,7 @@
 
   <!-- Create/edit post form: JS (create-post.js) intercepts submit and sends data via fetch instead of a normal page reload -->
   <form id="createPostForm">
-    <input type="file" id="photo" accept="image/jpeg,image/png,image/webp">
+    <input type="file" id="photos" accept="image/*" multiple>
     <p id="photoHint"></p>
     <textarea id="description" placeholder="Describe your trip..." required></textarea>
     <input type="date" id="travelDate" required>
