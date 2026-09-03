@@ -2,7 +2,7 @@
 
 A web application for documenting and sharing travel experiences — upload photos, write descriptions, add travel dates, and browse other travellers' posts in one place.
 
-Built for the IU course *Project: Java and Web Development* (CSEBCSPJWD01).
+
 
 ## Features
 
