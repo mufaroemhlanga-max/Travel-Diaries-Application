@@ -1,111 +1,127 @@
 # Travel Diaries
 
-A web application for documenting and sharing travel experiences — upload photos, write descriptions, add travel dates, and browse other travellers' posts in one place.
-
-
+A web application for documenting and sharing travel experiences—upload photos, write descriptions, add travel dates, and browse other travellers' posts.
 
 ## Features
 
-- User registration and login (session-based authentication)
-- Create, edit, and delete your own travel posts (photo, description, travel date)
-- Public homepage feed of all travel posts, newest first
-- Profile page listing your own posts with edit/delete controls
-- Personalized homepage greeting, live weather, and live location for the logged-in visitor (via Open-Meteo and BigDataCloud, both free/keyless APIs)
-- Responsive layout (desktop, tablet, and mobile)
+- User registration and session-based login
+- Create, edit, and delete personal travel posts
+- Upload travel photos and descriptions
+- Add travel dates
+- Public homepage feed, newest posts first
+- Personal profile with post controls
+- Live weather and location
+- Responsive desktop, tablet, and mobile layout
 
 ## Tech stack
 
-- **Frontend:** HTML, CSS, JavaScript (no framework)
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB (via Mongoose)
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend:** Node.js and Express.js
+- **Database:** MongoDB with Mongoose
 - **File uploads:** Multer
-- **Auth:** express-session + bcrypt (password hashing)
+- **Authentication:** express-session and bcrypt
 
 ## Prerequisites
 
-Before installing, make sure you have:
+Install the following:
 
-- [Node.js](https://nodejs.org) (v18 or later — includes npm)
-- [MongoDB Community Server](https://www.mongodb.com/try/download/community) installed and running locally (default port `27017`)
+- [Node.js](https://nodejs.org) version 18 or later
+- [MongoDB Community Server](https://www.mongodb.com/try/download/community)
+
+MongoDB must be running locally on port `27017`.
 
 ## Installation
 
-1. Clone this repository:
-   ```
-   git clone https://github.com/mufaroemhlanga-max/Travel-Diaries-Application.git
-   cd Travel-Diaries-Application
-   ```
+Clone the repository and install its dependencies:
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
-
-3. Create a `.env` file in the project root with the following two values:
-   ```
-   MONGODB_URI=mongodb://localhost:27017/travel-diaries
-   SESSION_SECRET=replace-with-any-random-string
-   ```
-   - `MONGODB_URI` is the connection address for your local MongoDB database (it's created automatically the first time the app saves data — no manual setup needed).
-   - `SESSION_SECRET` can be any random string of your choosing — it's used to securely sign login sessions. It should not be shared publicly.
-
-4. Create the folder used to store uploaded photos (this folder is intentionally excluded from the repository, since uploaded content shouldn't be version-controlled):
-   ```
-   mkdir public/uploads
-   ```
-
-## Running the app
-
-Make sure your local MongoDB server is running, then start the app:
-
-```
-node server.js
+```powershell
+git clone https://github.com/mufaroemhlanga-max/Travel-Diaries-Application.git
+cd Travel-Diaries-Application
+npm install
 ```
 
-You should see:
-```
-Server is running at http://localhost:3000
-Connected to MongoDB
+Create a `.env` file in the project root:
+
+```env
+MONGODB_URI=mongodb://localhost:27017/travel-diaries
+SESSION_SECRET=replace-with-a-secure-random-string
 ```
 
-Open **http://localhost:3000** in your browser.
+Create the uploads folder:
+
+```powershell
+mkdir public\uploads
+```
+
+Do not commit the `.env` file or uploaded photos to GitHub.
+
+## Running the application
+
+Ensure MongoDB is running, then start the application:
+
+```powershell
+npm start
+```
+
+For development with automatic server restarting:
+
+```powershell
+npm run dev
+```
+
+Open the application at:
+
+```text
+http://localhost:3000
+```
 
 ## Usage
 
-1. Register an account (or log in if you already have one)
-2. Click **+ New Post** to share a travel memory (photo, description, and travel date)
-3. View all posts on the homepage
-4. Click **Profile** to view, edit, or delete your own posts
+1. Register an account or log in.
+2. Select **+ New Post**.
+3. Upload a photo, description, and travel date.
+4. Browse posts on the homepage.
+5. Open **Profile** to edit or delete your posts.
 
 ## Project structure
 
-```
-├── public/              Frontend (HTML, CSS, client-side JS, uploaded photos)
+```text
+├── public/
 │   ├── css/
 │   ├── js/
-│   └── uploads/         Uploaded photos (created on setup, not tracked in git)
-├── routes/               Express route handlers (auth, posts, weather)
-├── models/               Mongoose schemas (User, Post)
-├── server.js             App entry point
-└── .env                  Local environment variables (not tracked in git)
+│   └── uploads/         Created locally for uploaded photos
+├── routes/              Express route handlers
+├── models/              Mongoose schemas
+├── server.js            Application entry point
+├── package.json         Dependencies and run scripts
+├── package-lock.json    Locked dependency versions
+└── .env.example         Environment-variable template
 ```
 
 ## Testing
 
-A Postman collection covering every route (`Travel-Diaries.postman_collection.json`, in the project root) is included as test-case evidence. Import it into Postman, run **Register** then **Login** first (Postman will keep the session cookie automatically), then try the rest of the requests. For routes that need a post ID (`Get single post`, `Update post`, `Delete post`), copy an `_id` from the **Get all posts** response into the collection's `postId` variable.
+A Postman collection named `Travel-Diaries.postman_collection.json` is included in the project root.
+
+Import it into Postman and run:
+
+1. **Register**
+2. **Login**
+3. The remaining requests
+
+For requests requiring a post ID, copy an `_id` from the **Get all posts** response into the collection's `postId` variable.
 
 ## API overview
 
 | Method | Route | Description | Requires login |
-|--------|-------|-------------|-----------------|
+|---|---|---|---|
 | POST | `/api/auth/register` | Create an account | No |
 | POST | `/api/auth/login` | Log in | No |
-| GET | `/api/auth/me` | Get the current logged-in user | Yes |
+| GET | `/api/auth/me` | Get the current user | Yes |
 | POST | `/api/auth/logout` | Log out | Yes |
 | GET | `/api/posts` | Get all travel posts | No |
-| GET | `/api/posts/mine` | Get the logged-in user's own posts | Yes |
-| GET | `/api/posts/:id` | Get a single post by ID | No |
-| POST | `/api/posts` | Create a post (photo upload) | Yes |
-| PUT | `/api/posts/:id` | Edit a post (owner only) | Yes |
-| DELETE | `/api/posts/:id` | Delete a post (owner only) | Yes |
-| GET | `/api/weather?lat=&lon=` | Get weather and place name for coordinates | No |
+| GET | `/api/posts/mine` | Get the user's posts | Yes |
+| GET | `/api/posts/:id` | Get a single post | No |
+| POST | `/api/posts` | Create a travel post | Yes |
+| PUT | `/api/posts/:id` | Edit a post | Yes |
+| DELETE | `/api/posts/:id` | Delete a post | Yes |
+| GET | `/api/weather?lat=&lon=` | Get weather and location | No |

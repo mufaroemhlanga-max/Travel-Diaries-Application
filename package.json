@@ -1,15 +1,25 @@
 {
   "name": "travel-diaries-application",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A web application for sharing travel experiences",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "echo \"No automated tests configured\""
   },
-  "keywords": [],
+  "keywords": [
+    "travel",
+    "diary",
+    "express",
+    "mongodb"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
@@ -18,5 +28,8 @@
     "heic-convert": "^2.1.0",
     "mongoose": "^9.8.0",
     "multer": "^2.2.0"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true
   }
 }
